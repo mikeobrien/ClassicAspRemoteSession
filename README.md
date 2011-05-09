@@ -1,4 +1,4 @@
-Classic ASP Shared Session
+Classic ASP Remote Session
 =============
 
-Classic ASP session state bridge.
+Classic ASP remote session state bridge.
