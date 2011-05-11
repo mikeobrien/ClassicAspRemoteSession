@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using RemoteSession.Asp;
 
@@ -7,7 +6,7 @@ namespace RemoteSession
 {
     public class Session
     {        
-        private const string AspNetSessionCookieName = "ASP.NET_SessionId";
+        public const string AspNetSessionCookieName = "ASP.NET_SessionId";
 
         private readonly ISessionProvider _sessionProvider;
 
@@ -19,11 +18,8 @@ namespace RemoteSession
         public void Open(ICookies cookies, ISession session)
         {
             if (!HasActiveSession(cookies)) return;
-            IDictionary<string, object> values;
-            if (_sessionProvider.Open(GetSessionId(cookies), out values))
-            {
-                foreach (var value in values) session[value.Key] = value.Value;
-            }
+            var values = _sessionProvider.Open(GetSessionId(cookies));
+            if (values != null) foreach (var value in values) session[value.Key] = value.Value;
             else session.Abandon();
         }
 

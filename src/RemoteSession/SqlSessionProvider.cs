@@ -6,15 +6,14 @@ namespace RemoteSession
 {
     public class SqlSessionProvider : ISessionProvider
     {
-        public bool Open(string sessionId, out IDictionary<string, object> values)
+        public IDictionary<string, object> Open(string sessionId)
         {
             File.AppendAllText(@"d:\temp\session.txt", string.Format("Open: {0}\r\n", sessionId));
-            values = new Dictionary<string, object>
+            return new Dictionary<string, object>
                        {
                            {"name", "mob"},
                            {"age", 32}
                        };
-            return true;
         }
 
         public string Save(IDictionary<string, object> values)
