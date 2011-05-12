@@ -1,6 +1,6 @@
 namespace RemoteSession.Asp
 {
-    public abstract class RemoteSessionBase
+    public abstract class RemoteSessionBase : IRemoteSession
     {
         private readonly Session _session;
 
