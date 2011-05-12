@@ -94,13 +94,12 @@ namespace Tests
 
             context.RequestCookies[Session.AspNetSessionCookieName].ReturnsForAnyArgs((string)null);
             context.Session.GetEnumerator().Returns(values.GetEnumerator());
-            sessionProvider.Save(null, null).ReturnsForAnyArgs(SessionId);
 
             new Session(sessionProvider).Save(context);
 
-            sessionProvider.Received().Save(Arg.Any<string>(), 
+            sessionProvider.Received().Save(Arg.Any<string>(), Arg.Any<string>(), 
                 Arg.Is<Dictionary<string, object>>(x => x["name1"] == "value1" && x["name2"] == "value2"));
-            context.ResponseCookies.Received()[Session.AspNetSessionCookieName] = Arg.Is(SessionId);
+            context.ResponseCookies.Received()[Session.AspNetSessionCookieName] = Arg.Any<string>();
         }
     }
 }

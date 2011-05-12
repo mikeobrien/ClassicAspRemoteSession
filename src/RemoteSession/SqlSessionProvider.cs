@@ -42,24 +42,12 @@ namespace RemoteSession
                        };
         }
 
-        public string Save(string metabasePath, IDictionary<string, object> values)
-        {
-            var id = CreateSessionId();
-            Save(metabasePath, id, values);
-            return id;
-        }
-
         public void Save(string metabasePath, string sessionId, IDictionary<string, object> values)
         {
             foreach (var value in values)
             {
                 File.AppendAllText(@"d:\temp\session.txt", string.Format("Save: {0}, {1}={2}\r\n", value.Key, value.Value, sessionId));
             }
-        }
-
-        private static string CreateSessionId()
-        {
-            return new SessionIDManager().CreateSessionID(null);
         }
 
         private string GetFullId(string id, string metabasePath)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Web.SessionState;
 using RemoteSession.Asp;
 
 namespace RemoteSession
@@ -18,9 +19,9 @@ namespace RemoteSession
 
         public void Open(HttpContext context)
         {
-            if (!HasActiveSession(context.RequestCookies)) return;
-            var values = _sessionProvider.Open(GetMetadataPath(context.ServerVariables), 
-                                               GetSessionId(context.RequestCookies));
+            string sessionId;
+            if (!TryGetSessionId(context.RequestCookies, out sessionId)) return;
+            var values = _sessionProvider.Open(GetMetadataPath(context.ServerVariables), sessionId);
             if (values != null) foreach (var value in values) context.Session[value.Key] = value.Value;
             else context.Session.Abandon();
         }
@@ -28,11 +29,18 @@ namespace RemoteSession
         public void Save(HttpContext context)
         {
             var values = context.Session.ToDictionary(x => x.Key, x => x.Value);
-            if (HasActiveSession(context.RequestCookies)) 
-                _sessionProvider.Save(GetMetadataPath(context.ServerVariables), 
-                                      GetSessionId(context.RequestCookies), values);
-            else context.ResponseCookies[AspNetSessionCookieName] = 
-                _sessionProvider.Save(GetMetadataPath(context.ServerVariables), values);
+            string sessionId;
+            if (!TryGetSessionId(context.RequestCookies, out sessionId))
+            {
+                sessionId = CreateSessionId();
+                context.ResponseCookies[AspNetSessionCookieName] = sessionId;
+            }
+            _sessionProvider.Save(GetMetadataPath(context.ServerVariables), sessionId, values);
+        }
+
+        private static string CreateSessionId()
+        {
+            return new SessionIDManager().CreateSessionID(null);
         }
 
         private static string GetMetadataPath(IServerVariables serverVariables)
@@ -40,14 +48,10 @@ namespace RemoteSession
             return (string)serverVariables[MetadataPathServerVariable];
         }
 
-        private static bool HasActiveSession(ICookies cookies)
+        private static bool TryGetSessionId(ICookies cookies, out string sessionId)
         {
-            return !String.IsNullOrEmpty(GetSessionId(cookies));
-        }
-
-        private static string GetSessionId(ICookies cookies)
-        {
-            return cookies[AspNetSessionCookieName];
+            sessionId = cookies[AspNetSessionCookieName];
+            return !String.IsNullOrEmpty(sessionId);
         }
     }
 }
