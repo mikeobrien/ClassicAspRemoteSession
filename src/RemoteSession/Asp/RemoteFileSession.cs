@@ -2,10 +2,10 @@
 
 namespace RemoteSession.Asp
 {
-    [ComVisible(true), GuidAttribute("F714C8BE-4EC9-470A-82B6-1CB579F3F1B0")]
+    [ComVisible(true), GuidAttribute("051303F1-877D-4438-B33B-81887009E60C")]
     [ProgId("UltravioletCatastrophe.RemoteFileSession")]
     [ClassInterface(ClassInterfaceType.AutoDual)]
-    public class RemoteFileSession : RemoteSessionBase
+    public class RemoteFileSession : RemoteSessionBase, IRemoteSession
     {
         public RemoteFileSession() : base(new FileSessionProvider()) {}
     }

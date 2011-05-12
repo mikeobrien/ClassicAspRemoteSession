@@ -2,7 +2,7 @@
 
 namespace RemoteSession.Asp
 {
-    [ComVisible(true), GuidAttribute("A8F5228B-199E-41F2-91B0-0C60C85B69AB")]
+    [ComVisible(true), GuidAttribute("60D7B1BF-8298-4A1A-B058-A80B0DA88AB3")]
     [InterfaceType(ComInterfaceType.InterfaceIsDual)]
     public interface IRemoteSession
     {
