@@ -7,6 +7,7 @@ namespace RemoteSession
     public class Session
     {        
         public const string AspNetSessionCookieName = "ASP.NET_SessionId";
+        public const string MetadataPathServerVariable = "APPL_MD_PATH";
 
         private readonly ISessionProvider _sessionProvider;
 
@@ -15,19 +16,28 @@ namespace RemoteSession
             _sessionProvider = sessionProvider;
         }
 
-        public void Open(ICookies cookies, ISession session)
+        public void Open(HttpContext context)
         {
-            if (!HasActiveSession(cookies)) return;
-            var values = _sessionProvider.Open(GetSessionId(cookies));
-            if (values != null) foreach (var value in values) session[value.Key] = value.Value;
-            else session.Abandon();
+            if (!HasActiveSession(context.RequestCookies)) return;
+            var values = _sessionProvider.Open(GetMetadataPath(context.ServerVariables), 
+                                               GetSessionId(context.RequestCookies));
+            if (values != null) foreach (var value in values) context.Session[value.Key] = value.Value;
+            else context.Session.Abandon();
         }
 
-        public void Save(ICookies requestCookies, ICookies responseCookies, ISession session)
+        public void Save(HttpContext context)
         {
-            var values = session.ToDictionary(x => x.Key, x => x.Value);
-            if (HasActiveSession(requestCookies)) _sessionProvider.Save(GetSessionId(requestCookies), values);
-            else responseCookies[AspNetSessionCookieName] = _sessionProvider.Save(values);
+            var values = context.Session.ToDictionary(x => x.Key, x => x.Value);
+            if (HasActiveSession(context.RequestCookies)) 
+                _sessionProvider.Save(GetMetadataPath(context.ServerVariables), 
+                                      GetSessionId(context.RequestCookies), values);
+            else context.ResponseCookies[AspNetSessionCookieName] = 
+                _sessionProvider.Save(GetMetadataPath(context.ServerVariables), values);
+        }
+
+        private static string GetMetadataPath(IServerVariables serverVariables)
+        {
+            return (string)serverVariables[MetadataPathServerVariable];
         }
 
         private static bool HasActiveSession(ICookies cookies)

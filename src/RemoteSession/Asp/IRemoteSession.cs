@@ -2,11 +2,11 @@
 
 namespace RemoteSession.Asp
 {
-    [ComVisible(true), GuidAttribute("B43A2878-A130-4AC3-BFBC-B7EFC4940723")]
+    [ComVisible(true), GuidAttribute("A8F5228B-199E-41F2-91B0-0C60C85B69AB")]
     [InterfaceType(ComInterfaceType.InterfaceIsDual)]
     public interface IRemoteSession
     {
-        void Load(dynamic request, dynamic session);
+        void Load(dynamic request, dynamic response, dynamic session);
         void Save(dynamic request, dynamic response, dynamic session);
     }
 }

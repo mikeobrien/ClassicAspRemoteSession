@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="SessionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlSessionProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
