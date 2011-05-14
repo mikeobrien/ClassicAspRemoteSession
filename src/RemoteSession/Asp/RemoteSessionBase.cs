@@ -55,8 +55,8 @@ namespace RemoteSession.Asp
         private static HttpContext CreateContext(dynamic request, dynamic response, dynamic session)
         {
             return new HttpContext(new ServerVariableAdapter(request.ServerVariables),
-                                   new CookieAdapter(request.Cookies),
-                                   new CookieAdapter(response.Cookies),
+                                   new CookieAdapter(request.Cookies, response),
+                                   new CookieAdapter(response.Cookies, response),
                                    new SessionAdapter(session));
         }
 

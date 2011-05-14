@@ -25,7 +25,7 @@ namespace RemoteSession
         public IDictionary<string, object> Load(Context context)
         {
             var path = GetSessionFilePath(context);
-            if (!File.Exists(path)) return new Dictionary<string, object>();
+            if (!File.Exists(path)) return null;
             SessionStateItemCollection collection;
             using (var file = File.OpenRead(path))
             using (var reader = new BinaryReader(file))

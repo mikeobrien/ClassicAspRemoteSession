@@ -7,7 +7,11 @@
 
 <h3><a href="FileSession.aspx">Session File Editor</a></h3>
 
-<p>Session Id: <%= Request.Cookies["ASP.NET_SessionId"].Value%></p>
+<%
+    if (Request.QueryString["createsession"] == "true") Session["test"] = "test";
+%>
+
+<p>Session Id: <%= Request.Cookies["ASP.NET_SessionId"].Value%> (<a href="filesession.aspx?createsession=true">Create Session</a>)</p>
 
 <%
 
@@ -18,7 +22,7 @@ if (Request.QueryString["create"] == "true") provider.Save(context, new Dictiona
 if (Request.QueryString["delete"] == "true") provider.Abandon(context);
 
 if (!File.Exists(provider.GetSessionFilePath(context))) {
-    %> Session file not found. (<a href="filesession.aspx?create=true">Create</a>) <%
+    %> Session file not found. (<a href="filesession.aspx?create=true">Create File</a>) <%
 } else {
 
     var values = provider.Load(context);
