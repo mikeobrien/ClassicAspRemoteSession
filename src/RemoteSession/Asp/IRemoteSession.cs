@@ -8,5 +8,6 @@ namespace RemoteSession.Asp
     {
         void Load(dynamic request, dynamic response, dynamic session);
         void Save(dynamic request, dynamic response, dynamic session);
+        void Abandon(dynamic request, dynamic response, dynamic session);
     }
 }

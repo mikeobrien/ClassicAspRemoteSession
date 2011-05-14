@@ -1,28 +1,49 @@
-using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web.SessionState;
 
 namespace RemoteSession
 {
     public class FileSessionProvider : ISessionProvider
     {
-        public IDictionary<string, object> Open(string metabasePath, string sessionId)
+        private readonly string _path;
+
+        public FileSessionProvider() : 
+            this(Path.GetTempPath()) { }
+
+        public FileSessionProvider(string sessionPath)
         {
-            throw new NotImplementedException();
+            _path = sessionPath;
         }
 
-        public string Save(string metabasePath, IDictionary<string, object> values)
+        public string GetSessionFilePath(Context context)
         {
-            throw new NotImplementedException();
+            return Path.Combine(_path, string.Format("{0}.session", context.SessionId));
         }
 
-        public void Save(string metabasePath, string sessionId, IDictionary<string, object> values)
+        public IDictionary<string, object> Load(Context context)
         {
-            throw new NotImplementedException();
+            var path = GetSessionFilePath(context);
+            if (!File.Exists(path)) return new Dictionary<string, object>();
+            SessionStateItemCollection collection;
+            using (var file = File.OpenRead(path))
+            using (var reader = new BinaryReader(file))
+                collection = SessionStateItemCollection.Deserialize(reader);
+            return collection.Cast<object>().ToDictionary(item => (string) item, item => collection[(string) item]);
+        }
+         
+        public void Save(Context context, IDictionary<string, object> values)
+        {
+            var collection = new SessionStateItemCollection();
+            foreach (var value in values) collection[value.Key] = value.Value;
+            using (var file = File.OpenWrite(GetSessionFilePath(context)))
+            using (var writer = new BinaryWriter(file)) collection.Serialize(writer);
         }
 
-        //private string GetSessionFilePath()
-        //{
-            
-        //}
+        public void Abandon(Context context)
+        {
+            File.Delete(GetSessionFilePath(context));
+        }
     }
 }

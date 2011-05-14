@@ -40,6 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -58,6 +59,7 @@
     <Compile Include="Asp\IServerVariables.cs" />
     <Compile Include="Asp\RemoteSessionBase.cs" />
     <Compile Include="Asp\ServerVariableAdapter.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="FileSessionProvider.cs" />
     <Compile Include="ISessionProvider.cs" />
     <Compile Include="Asp\ISession.cs" />

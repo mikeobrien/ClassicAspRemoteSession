@@ -11,7 +11,7 @@
 
         public object this[string name]
         {
-            get { return _serverVariables[name]; }
+            get { return _serverVariables.Item(name)(); }
         }
     }
 }

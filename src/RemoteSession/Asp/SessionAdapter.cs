@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -16,6 +17,11 @@ namespace RemoteSession.Asp
         {
             get { return _session[name]; }
             set { _session[name] = value; }
+        }
+
+        public void Remove(string name)
+        {
+            _session.Contents.Remove(name);
         }
 
         public void Abandon()

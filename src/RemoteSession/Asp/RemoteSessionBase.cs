@@ -1,7 +1,11 @@
+using System;
+using System.IO;
+
 namespace RemoteSession.Asp
 {
     public abstract class RemoteSessionBase : IRemoteSession
     {
+        private static readonly string LogFile = Path.Combine(Path.GetTempPath(), "RemoteSession.log");
         private readonly Session _session;
 
         protected RemoteSessionBase(ISessionProvider sessionProvider)
@@ -10,13 +14,42 @@ namespace RemoteSession.Asp
         }
 
         public void Load(dynamic request, dynamic response, dynamic session)
-        {
-            _session.Open(CreateContext(request, response, session));
+        {            
+            try
+            {
+                _session.Open(CreateContext(request, response, session));
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                throw;
+            }
         }
 
         public void Save(dynamic request, dynamic response, dynamic session)
-        {
-            _session.Save(CreateContext(request, response, session));
+        {            
+            try
+            {
+                _session.Save(CreateContext(request, response, session));
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                throw;
+            }
+        }
+
+        public void Abandon(dynamic request, dynamic response, dynamic session)
+        {            
+            try
+            {
+                _session.Abandon(CreateContext(request, response, session));
+            }
+            catch (Exception ex)
+            {
+                LogException(ex);
+                throw;
+            }
         }
 
         private static HttpContext CreateContext(dynamic request, dynamic response, dynamic session)
@@ -25,6 +58,11 @@ namespace RemoteSession.Asp
                                    new CookieAdapter(request.Cookies),
                                    new CookieAdapter(response.Cookies),
                                    new SessionAdapter(session));
+        }
+
+        private static void LogException(Exception exception)
+        {
+            File.AppendAllText(LogFile, string.Format("{0}: {1}\r\n\r\n", DateTime.Now, exception));
         }
     }
 }

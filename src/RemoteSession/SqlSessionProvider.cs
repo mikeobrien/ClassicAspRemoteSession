@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Web.SessionState;
 
 namespace RemoteSession
 {
@@ -32,9 +31,9 @@ namespace RemoteSession
      */
     public class SqlSessionProvider : ISessionProvider
     {
-        public IDictionary<string, object> Open(string metabasePath, string sessionId)
+        public IDictionary<string, object> Load(Context context)
         {
-            File.AppendAllText(@"d:\temp\session.txt", string.Format("Open: {0}\r\n", sessionId));
+            File.AppendAllText(@"d:\temp\session.txt", string.Format("Open: {0}\r\n", context.SessionId));
             return new Dictionary<string, object>
                        {
                            {"name", "mob"},
@@ -42,12 +41,17 @@ namespace RemoteSession
                        };
         }
 
-        public void Save(string metabasePath, string sessionId, IDictionary<string, object> values)
+        public void Save(Context context, IDictionary<string, object> values)
         {
             foreach (var value in values)
             {
-                File.AppendAllText(@"d:\temp\session.txt", string.Format("Save: {0}, {1}={2}\r\n", value.Key, value.Value, sessionId));
+                File.AppendAllText(@"d:\temp\session.txt", string.Format("Save: {0}, {1}={2}\r\n", value.Key, value.Value, context.SessionId));
             }
+        }
+
+        public void Abandon(Context context)
+        {
+            throw new NotImplementedException();
         }
 
         private string GetFullId(string id, string metabasePath)
