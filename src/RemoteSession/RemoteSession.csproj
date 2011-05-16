@@ -67,6 +67,7 @@
     <Compile Include="Asp\RemoteSqlSession.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Asp\SessionAdapter.cs" />
+    <Compile Include="SessionStateEncoding.cs" />
     <Compile Include="SqlSessionProvider.cs" />
   </ItemGroup>
   <ItemGroup>
