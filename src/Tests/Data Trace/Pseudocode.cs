@@ -3,7 +3,7 @@
 TempGetAppID 
     @appName varchar(280), 
     @appId   int OUTPUT
-    
+            
 TempGetStateItemExclusive3
     @id          nvarchar(88),
     @itemShort   varbinary(7000) OUTPUT,
@@ -45,31 +45,29 @@ TempRemoveStateItem
 
 */
 
-private const DefaultSessionData = 0x140000000000FF;
 private const DefaultTimeout = 20;
 
-public string GetAppId()
+public string GetAppId(string appName)
 {
     return TempGetAppID(appName);
 }
 
 public SessionData ReadSession(string id)
 {
-    var data = GetSessionData(id);
+    var data = TempGetStateItemExclusive3(id);
     if (!data.Empty) TempReleaseStateItemExclusive(id, data.LockCookie);
     return data;
 } 
 
 public void WriteSession(id, itemData)
 {
-    var data = GetSessionData(id);
-    if (data.Expired) return;
+    var data = TempGetStateItemExclusive3(id);
     if (data.Empty)
     {
         if (itemData.Length <= 7000)
-            TempInsertStateItemShort(id, itemData, data.Timeout);
+            TempInsertStateItemShort(id, itemData, DefaultTimeout);
         else
-            TempInsertStateItemLong(id, itemData, data.Timeout);
+            TempInsertStateItemLong(id, itemData, DefaultTimeout);
     }
     else
     {
@@ -83,17 +81,5 @@ public void WriteSession(id, itemData)
 public void AbandonSession(string id)
 {
     var data = TempGetStateItemExclusive3(id);
-    if (!data.Empty) AbandonSession(id, data);
-}
-
-private SessionData GetSessionData(string id)
-{
-    var data = TempGetStateItemExclusive3(id);
-    if (!data.Empty && data.Expired) AbandonSession(id, data);
-    return data;
-}
-
-private void AbandonSession(string id, SessionData data)
-{
-    TempRemoveStateItem(id, data.LockCookie);
+    if (!data.Empty) TempRemoveStateItem(id, data.LockCookie);
 }

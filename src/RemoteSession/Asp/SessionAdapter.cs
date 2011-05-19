@@ -24,6 +24,11 @@ namespace RemoteSession.Asp
             _session.Contents.Remove(name);
         }
 
+        public void RemoveAll()
+        {
+            _session.Contents.RemoveAll();
+        }
+
         public void Abandon()
         {
             _session.Abandon();

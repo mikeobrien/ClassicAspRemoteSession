@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SqlDsl.cs" />
     <Compile Include="SqlSessionStoreTests.cs" />
     <Compile Include="SessionStateEncodingTests.cs" />
     <Compile Include="SessionTests.cs" />

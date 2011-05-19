@@ -29,13 +29,9 @@ namespace RemoteSession
             string sessionId;
             if (!TryGetSessionId(context.RequestCookies, out sessionId)) return;
             var values = _sessionProvider.Load(new Context(GetMetadataPath(context.ServerVariables), sessionId));
-            if (values != null)
-            {
-                var compatableValues = WhereDataTypesAreCompatable(values);
-                foreach (var value in compatableValues) context.Session[value.Key] = value.Value;
-                foreach (var value in context.Session.Except(compatableValues)) context.Session.Remove(value.Key);
-            }
-            else context.Session.Abandon();
+            context.Session.RemoveAll();
+            if (values == null || !values.Any()) return;
+            foreach (var value in WhereDataTypesAreCompatable(values)) context.Session[value.Key] = value.Value;
         }
 
         public void Save(HttpContext context)

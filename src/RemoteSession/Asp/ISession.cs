@@ -6,6 +6,7 @@ namespace RemoteSession.Asp
     {
         object this[string name] { get; set; }
         void Remove(string name);
+        void RemoveAll();
         void Abandon();
     }
 }

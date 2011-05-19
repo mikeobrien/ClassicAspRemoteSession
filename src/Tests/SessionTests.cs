@@ -33,7 +33,7 @@ namespace Tests
             new Session(sessionProvider).Open(context);
 
             sessionProvider.DidNotReceiveWithAnyArgs().Load(null);
-            context.Session.DidNotReceive().Abandon();
+            context.Session.DidNotReceive().RemoveAll();
         }
 
         [Test] 
@@ -50,32 +50,9 @@ namespace Tests
             new Session(sessionProvider).Open(context);
 
             sessionProvider.ReceivedWithAnyArgs().Load(null);
+            context.Session.Received().RemoveAll();
             context.Session.Received()["name1"] = "value1";
             context.Session.Received()["name2"] = "value2";
-            context.Session.DidNotReceive().Abandon();
-        }
-
-        [Test]
-        public void Open_Should_Remove_Extra_Session_Variables()
-        {
-            var context = CreateMockableContext();
-            var sessionProvider = Substitute.For<ISessionProvider>();
-            var values = new Dictionary<string, object> { { "name1", "value1" }, { "name2", "value2" } };
-            var extraValues = new Dictionary<string, object> { { "name3", "value3" }, { "name4", "value4" } };
-
-            context.ServerVariables[Session.MetadataPathServerVariable].Returns(MetabasePath);
-            context.RequestCookies[Session.AspNetSessionCookieName].Returns(SessionId);
-            context.Session.GetEnumerator().Returns(extraValues.GetEnumerator());
-            sessionProvider.Load(null).ReturnsForAnyArgs(values);
-
-            new Session(sessionProvider).Open(context);
-
-            sessionProvider.ReceivedWithAnyArgs().Load(null);
-            context.Session.Received()["name1"] = "value1";
-            context.Session.Received()["name2"] = "value2";
-            context.Session.Received().Remove("name3");
-            context.Session.Received().Remove("name4");
-            context.Session.DidNotReceive().Abandon();
         }
 
         [Test]
@@ -96,6 +73,7 @@ namespace Tests
             new Session(sessionProvider).Open(context);
 
             sessionProvider.ReceivedWithAnyArgs().Load(null);
+            context.Session.Received().RemoveAll();
             context.Session.Received()["string"] = "string";
             context.Session.Received()["byte"] = (byte)25;
             context.Session.Received()["bool"] = true;
@@ -105,11 +83,10 @@ namespace Tests
             context.Session.Received()["float"] = 36.7F;
             context.Session.Received()["datetime"] = DateTime.MinValue;
             context.Session.DidNotReceive()["guid"] = Guid.Empty;
-            context.Session.DidNotReceive().Abandon();
         }
 
         [Test]
-        public void Open_Should_Abandon_Session_If_The_Session_Has_Expired()
+        public void Open_Should_Clear_Session_If_The_Session_Is_Empty()
         {
             var context = CreateMockableContext();
             var sessionProvider = Substitute.For<ISessionProvider>();
@@ -121,8 +98,8 @@ namespace Tests
             new Session(sessionProvider).Open(context);
 
             sessionProvider.ReceivedWithAnyArgs().Load(null);
+            context.Session.Received().RemoveAll();
             context.Session.DidNotReceiveWithAnyArgs()[null] = Arg.Any<object>();
-            context.Session.Received().Abandon();
         }
 
         [Test]
@@ -192,7 +169,7 @@ namespace Tests
         }
 
         [Test]
-        public void Should_Not_Abandon_Remote_Session_If_There_Is_Not_A_Sesison_Id()
+        public void Should_Not_Clear_Remote_Session_When_Abandoned_If_There_Is_Not_A_Sesison_Id()
         {
             var context = CreateMockableContext();
             var sessionProvider = Substitute.For<ISessionProvider>();

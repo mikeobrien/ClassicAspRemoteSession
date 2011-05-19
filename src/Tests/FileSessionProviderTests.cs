@@ -36,7 +36,7 @@ namespace Tests
 
             var values = provider.Load(_context);
 
-            values.ShouldBeEmpty();
+            values.ShouldBeNull();
             File.Exists(provider.GetSessionFilePath(_context)).ShouldBeFalse();
         }
 

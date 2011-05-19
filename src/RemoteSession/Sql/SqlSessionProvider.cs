@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace RemoteSession
+namespace RemoteSession.Sql
 {
     /*
      * ASP.NET_SessionId = 1sc3aoog5u5zyko2tl3ghnvq

@@ -68,8 +68,10 @@
     <Compile Include="Session.cs" />
     <Compile Include="Asp\SessionAdapter.cs" />
     <Compile Include="SessionStateEncoding.cs" />
-    <Compile Include="SqlSessionProvider.cs" />
-    <Compile Include="SqlSessionStore.cs" />
+    <Compile Include="Sql\SqlProcedure.cs" />
+    <Compile Include="Sql\SqlSession.cs" />
+    <Compile Include="Sql\SqlSessionProvider.cs" />
+    <Compile Include="Sql\SqlSessionStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
