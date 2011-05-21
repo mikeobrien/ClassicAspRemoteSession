@@ -4,8 +4,8 @@ namespace RemoteSession
 {
     public interface ISessionProvider
     {
-        IDictionary<string, object> Load(Context context);
-        void Save(Context context, IDictionary<string, object> values);
-        void Abandon(Context context);
+        IDictionary<string, object> Load(ISessionContext context);
+        void Save(ISessionContext context, IDictionary<string, object> values);
+        void Abandon(ISessionContext context);
     }
 }

@@ -17,12 +17,12 @@ namespace RemoteSession
             _path = sessionPath;
         }
 
-        public string GetSessionFilePath(Context context)
+        public string GetSessionFilePath(ISessionContext context)
         {
             return Path.Combine(_path, string.Format("{0}.session", context.SessionId));
         }
 
-        public IDictionary<string, object> Load(Context context)
+        public IDictionary<string, object> Load(ISessionContext context)
         {
             var path = GetSessionFilePath(context);
             if (!File.Exists(path)) return null;
@@ -33,7 +33,7 @@ namespace RemoteSession
             return collection.Cast<object>().ToDictionary(item => (string) item, item => collection[(string) item]);
         }
          
-        public void Save(Context context, IDictionary<string, object> values)
+        public void Save(ISessionContext context, IDictionary<string, object> values)
         {
             var collection = new SessionStateItemCollection();
             foreach (var value in values) collection[value.Key] = value.Value;
@@ -41,7 +41,7 @@ namespace RemoteSession
             using (var writer = new BinaryWriter(file)) collection.Serialize(writer);
         }
 
-        public void Abandon(Context context)
+        public void Abandon(ISessionContext context)
         {
             File.Delete(GetSessionFilePath(context));
         }

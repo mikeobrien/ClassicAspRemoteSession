@@ -57,12 +57,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlDsl.cs" />
-    <Compile Include="SqlSessionStoreTests.cs" />
-    <Compile Include="SessionStateEncodingTests.cs" />
-    <Compile Include="SessionTests.cs" />
+    <Compile Include="Integration\SessionTests.cs" />
+    <Compile Include="Unit\SessionContextTests.cs" />
+    <Compile Include="Unit\SqlSessionIdTests.cs" />
+    <Compile Include="Unit\SqlSessionProviderTests.cs" />
+    <Compile Include="Integration\SqlDsl.cs" />
+    <Compile Include="Integration\SqlSessionStoreTests.cs" />
+    <Compile Include="Unit\SessionStateEncodingTests.cs" />
+    <Compile Include="Unit\SessionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileSessionProviderTests.cs" />
+    <Compile Include="Integration\FileSessionProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

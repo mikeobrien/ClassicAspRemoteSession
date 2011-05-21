@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Web;
 using System.Web.SessionState;
@@ -6,6 +7,10 @@ namespace RemoteSession
 {
     public class SessionStateEncoding
     {
+        public class InvalidSessionStateException : Exception { 
+         public InvalidSessionStateException() : this(null) {}
+         public InvalidSessionStateException(Exception e) : base("Invalid session state", e) {}}
+
         public byte[] Serialize(SessionStateStoreData sessionState)
         {
             var hasItems = sessionState.Items != null && sessionState.Items.Count > 0;
@@ -23,6 +28,7 @@ namespace RemoteSession
 
         public SessionStateStoreData Deserialize(byte[] data)
         {
+            if (data == null || data.Length == 0) throw new InvalidSessionStateException();
             try
             {
                 var reader = new BinaryReader(new MemoryStream(data));
@@ -34,7 +40,7 @@ namespace RemoteSession
                 if (reader.ReadByte() != byte.MaxValue) throw new HttpException("Invalid session state");
                 return new SessionStateStoreData(stateItemCollection, staticObjects, timeout);
             }
-            catch (EndOfStreamException) { throw new HttpException("Invalid session state"); }
+            catch (Exception e) { throw new InvalidSessionStateException(e); }
         }
     }
 }

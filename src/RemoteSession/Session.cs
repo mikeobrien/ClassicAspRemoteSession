@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.SessionState;
-using RemoteSession.Asp;
+using RemoteSession.Interop;
 
 namespace RemoteSession
 {
     public class Session
     {        
-        public const string AspNetSessionCookieName = "ASP.NET_SessionId";
-        public const string MetadataPathServerVariable = "APPL_MD_PATH";
-
         private static readonly Type[] CompatableTypes = new[]
             {
                 typeof (string), typeof (byte), typeof (bool), typeof (short), typeof (int), 
@@ -24,56 +20,36 @@ namespace RemoteSession
             _sessionProvider = sessionProvider;
         }
 
-        public void Open(HttpContext context)
+        public void Load(HttpContext httpContext)
         {
-            string sessionId;
-            if (!TryGetSessionId(context.RequestCookies, out sessionId)) return;
-            var values = _sessionProvider.Load(new Context(GetMetadataPath(context.ServerVariables), sessionId));
-            context.Session.RemoveAll();
+            var sessionContext = SessionContext.Create(httpContext);
+            if (!sessionContext.HasActiveSession()) return;
+            var values = _sessionProvider.Load(sessionContext);
+            httpContext.Session.RemoveAll();
             if (values == null || !values.Any()) return;
-            foreach (var value in WhereDataTypesAreCompatable(values)) context.Session[value.Key] = value.Value;
+            foreach (var value in ItemsWithCompatableDataTypes(values)) httpContext.Session[value.Key] = value.Value;
         }
 
-        public void Save(HttpContext context)
+        public void Save(HttpContext httpContext)
         {
-            var values = WhereDataTypesAreCompatable(context.Session.ToDictionary(x => x.Key, x => x.Value));
-            string sessionId;
-            if (!TryGetSessionId(context.RequestCookies, out sessionId))
-            {
-                sessionId = CreateSessionId();
-                context.ResponseCookies[AspNetSessionCookieName] = sessionId;
-            }
-            _sessionProvider.Save(new Context(GetMetadataPath(context.ServerVariables), sessionId), values);
+            var sessionContext = SessionContext.Create(httpContext);
+            var values = ItemsWithCompatableDataTypes(httpContext.Session.ToDictionary(x => x.Key, x => x.Value));
+            if (!sessionContext.HasActiveSession()) sessionContext.CreateNewSession();
+            _sessionProvider.Save(sessionContext, values);
         }
 
-        public void Abandon(HttpContext context)
+        public void Abandon(HttpContext httpContext)
         {
-            context.Session.Abandon();
-            string sessionId;
-            if (!TryGetSessionId(context.RequestCookies, out sessionId)) return;
-            _sessionProvider.Abandon(new Context(GetMetadataPath(context.ServerVariables), sessionId));
+            var sessionContext = SessionContext.Create(httpContext);
+            httpContext.Session.Abandon();
+            if (!sessionContext.HasActiveSession()) return;
+            _sessionProvider.Abandon(sessionContext);
         }
 
-        private static IDictionary<string, object> WhereDataTypesAreCompatable(IDictionary<string, object> values)
+        private static IDictionary<string, object> ItemsWithCompatableDataTypes(IDictionary<string, object> values)
         {
             return values.Where(x => x.Value != null).
                           Join(CompatableTypes, x => x.Value.GetType(), x => x, (x, y) => x).ToDictionary(x => x.Key, x => x.Value);
-        }
-
-        private static string CreateSessionId()
-        {
-            return new SessionIDManager().CreateSessionID(null);
-        }
-
-        private static string GetMetadataPath(IServerVariables serverVariables)
-        {
-            return (string)serverVariables[MetadataPathServerVariable];
-        }
-
-        private static bool TryGetSessionId(ICookies cookies, out string sessionId)
-        {
-            sessionId = cookies[AspNetSessionCookieName];
-            return !String.IsNullOrEmpty(sessionId);
         }
     }
 }
