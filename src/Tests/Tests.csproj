@@ -57,25 +57,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\SessionTests.cs" />
-    <Compile Include="Unit\SessionContextTests.cs" />
+    <Compile Include="Common\Constants.cs" />
+    <Compile Include="Common\SessionDatabase.cs" />
+    <Compile Include="Integration\SessionStateTests.cs" />
+    <Compile Include="Common\TestDoubles\Cookies.cs" />
+    <Compile Include="Common\TestDoubles\HttpContext.cs" />
+    <Compile Include="Common\TestDoubles\ServerVariables.cs" />
+    <Compile Include="Common\TestDoubles\SessionState.cs" />
+    <Compile Include="Unit\SessionStateContextTests.cs" />
     <Compile Include="Unit\SqlSessionIdTests.cs" />
-    <Compile Include="Unit\SqlSessionProviderTests.cs" />
-    <Compile Include="Integration\SqlDsl.cs" />
+    <Compile Include="Unit\SqlSessionStateProviderTests.cs" />
+    <Compile Include="Common\SqlClientExtensions.cs" />
     <Compile Include="Integration\SqlSessionStoreTests.cs" />
     <Compile Include="Unit\SessionStateEncodingTests.cs" />
-    <Compile Include="Unit\SessionTests.cs" />
+    <Compile Include="Unit\SessionStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Integration\FileSessionProviderTests.cs" />
+    <Compile Include="Unit\WebConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <Content Include="Web.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RemoteSession\RemoteSession.csproj">
+    <ProjectReference Include="..\RemoteSessionState\RemoteSessionState.csproj">
       <Project>{90442641-1ED0-4187-B53C-346EFC1EEB9E}</Project>
-      <Name>RemoteSession</Name>
+      <Name>RemoteSessionState</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
-using RemoteSession;
+using RemoteSessionState;
 using Should;
+using Tests.Common;
 
 namespace Tests.Unit
 {
@@ -10,8 +11,8 @@ namespace Tests.Unit
         [Test]
         public void Should_Create_A_Fully_Qualifed_Session_Id()
         {
-            var sessionId = SqlSessionId.Create("/lm/w3svc/1/root", "4m4irghotazmxblpyakfaw1d2014c0f1");
-            sessionId.ToString().ShouldEqual("4m4irghotazmxblpyakfaw1d2014c0f12014c0f1");
+            var sessionId = SqlSessionId.Create(Constants.MetabasePath, Constants.SessionId);
+            sessionId.ToString().ShouldEqual(Constants.FullSessionId);
         }
     }
 }
