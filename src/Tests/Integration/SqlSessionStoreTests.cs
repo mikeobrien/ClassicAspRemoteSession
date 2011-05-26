@@ -49,6 +49,21 @@ namespace Tests.Integration
         }
 
         [Test]
+        public void Should_Load_An_Empty_Session_And_Unlock_It_Afterwards()
+        {
+            SessionDatabase.CreateSession(Constants.FullSessionId, Constants.SessionStateEmptySerializedBytes);
+            var store = new SqlSessionStateStore(Constants.ConnectionString, Constants.SessionTimeout);
+            var sessionState = store.Load(_sessionId);
+
+            sessionState.ShouldEqual(Constants.SessionStateEmptySerializedBytes);
+
+            var session = SessionDatabase.GetSession(Constants.FullSessionId);
+
+            session.ShouldNotBeNull("No session found");
+            session.Locked.ShouldBeFalse();
+        }
+
+        [Test]
         public void Should_Abandon_Session()
         {
             SessionDatabase.CreateSession(Constants.FullSessionId, ShortData);

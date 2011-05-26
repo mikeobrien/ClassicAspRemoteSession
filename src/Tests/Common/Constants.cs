@@ -9,7 +9,7 @@ namespace Tests.Common
         // Session 
 
         public const int SessionTimeout = 20;
-        public const string MetabasePath = "/lm/w3svc/1/root";
+        public const string MetabasePath = "/LM/W3SVC/1/ROOT";
         public const int ApplicationId = 538231025;
         public const string ApplicationIdEncoded = "2014c0f1";
         public const string SessionId = "1sc3aoog5u5zyko2tl3ghnvq";
@@ -17,6 +17,13 @@ namespace Tests.Common
         public const string ConnectionString = "server=localhost;database=ASPNetSessionState;Integrated Security=SSPI";
 
         // Session data 
+
+        public const string SessionStateEmptySerializedHex = "140000000000FF";
+
+        public static readonly byte[] SessionStateEmptySerializedBytes = Enumerable.Range(0, SessionStateEmptySerializedHex.Length).
+                                                                          Where(x => x % 2 == 0).
+                                                                          Select(x => Convert.ToByte(SessionStateEmptySerializedHex.Substring(x, 2), 16)).
+                                                                          ToArray();
 
         public const int SessionStateItemCount = 3;
 

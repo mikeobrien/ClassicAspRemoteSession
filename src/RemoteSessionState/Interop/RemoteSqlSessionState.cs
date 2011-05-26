@@ -1,8 +1,10 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace RemoteSessionState.Interop
 {
-    [ComVisible(true), GuidAttribute("68F1BBC6-9123-4129-B5DF-88D5B4F9A99D")]
+    [ComVisible(true), GuidAttribute("51D25D7A-75E7-4584-804A-12851D37BB97")]
     [ProgId("UltravioletCatastrophe.RemoteSqlSessionState")]
     [ClassInterface(ClassInterfaceType.AutoDual)]
     public class RemoteSqlSessionState : RemoteSessionBase

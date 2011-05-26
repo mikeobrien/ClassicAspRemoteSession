@@ -1,28 +1,31 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
-using System.Xml.XPath;
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace RemoteSessionState
 {
     public class WebConfig
     {
-        public const string Filename = "web.config";
-        private readonly XDocument _document;
+        private const string VirtualDirectory = "/";
+        private readonly string _path;
+        private Configuration _configuration;
 
         public WebConfig(string path)
         {
-            _document = XDocument.Load(Path.Combine(path, Filename));
+            _path = path;
         }
 
-        public T GetValue<T>(string xpath)
+        public T GetSection<T>(string section) where T : class
         {
-            var result = ((IEnumerable<Object>) _document.XPathEvaluate(xpath)).FirstOrDefault();
-            if (result is XAttribute) return (T)Convert.ChangeType(((XAttribute) result).Value, typeof(T));
-            if (result is XElement) return (T)Convert.ChangeType(((XElement)result).Value, typeof(T));
-            return default(T);
+            EnsureInitialized();
+            return _configuration.GetSection(section) as T;
+        }
+
+        private void EnsureInitialized()
+        {
+            if (_configuration != null) return;
+            var webConfigurationFileMap = new WebConfigurationFileMap();
+            webConfigurationFileMap.VirtualDirectories.Add(VirtualDirectory, new VirtualDirectoryMapping(_path, true));
+            _configuration = WebConfigurationManager.OpenMappedWebConfiguration(webConfigurationFileMap, VirtualDirectory);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Tests.Unit
         public void Should_Create_A_Fully_Qualifed_Session_Id()
         {
             var sessionId = SqlSessionId.Create(Constants.MetabasePath, Constants.SessionId);
-            sessionId.ToString().ShouldEqual(Constants.FullSessionId);
+            sessionId.ToString().ShouldEqual(Constants.SessionId + Constants.ApplicationIdEncoded);
         }
     }
 }

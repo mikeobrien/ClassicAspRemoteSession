@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 
 namespace Tests.Common
 {
@@ -11,7 +10,7 @@ namespace Tests.Common
         {
             Constants.ConnectionString.ExecuteNonQuery(
                 "INSERT INTO ASPStateTempSessions (SessionId, Created, Expires, LockDate, LockDateLocal, LockCookie, Timeout, Locked, SessionItemShort, SessionItemLong, Flags) VALUES " +
-                "(@SessionId, GETUTCDATE(), DATEADD(n, 20, GETUTCDATE()), GETUTCDATE(), GETDATE(), 0, 20, 0, @ShortSessionData, @LongSessionData, 1)", 
+                "(@SessionId, GETUTCDATE(), DATEADD(n, 20, GETUTCDATE()), GETUTCDATE(), GETDATE(), 0, 20, 0, @ShortSessionData, @LongSessionData, 0)", 
                 new SqlParameter("SessionId", sessionId),
                 new SqlParameter("ShortSessionData", SqlDbType.VarBinary) { Value = data.Length <= 7000 ? (object)data : DBNull.Value },
                 new SqlParameter("LongSessionData", SqlDbType.Image) { Value = data.Length > 7000 ? (object)data : DBNull.Value });

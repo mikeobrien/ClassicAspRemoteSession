@@ -24,6 +24,7 @@ namespace RemoteSessionState
 
         private static string GetApplicationId(string metabasePath)
         {
+            metabasePath = metabasePath.ToLower();
             var hash = 5381;
             var length = metabasePath.Length;
 

@@ -8,7 +8,7 @@ namespace RemoteSessionState
         public int LockAge { get; set; }
         public int LockCookie { get; set; }
         public int ActionFlags { get; set; }
-        public bool Empty { get { return ActionFlags == 0; } }
+        public bool Empty { get { return Data == null || Data.Length == 0; } }
 
         public static bool IsShortData(byte[] data)
         {

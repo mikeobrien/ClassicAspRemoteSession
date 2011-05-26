@@ -38,6 +38,9 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -53,7 +56,6 @@
     <Compile Include="Interop\CollectionEnumerator.cs" />
     <Compile Include="Interop\CookieAdapter.cs" />
     <Compile Include="Interop\IHttpContext.cs" />
-    <Compile Include="Interop\RemoteFileSessionState.cs" />
     <Compile Include="Interop\HttpContext.cs" />
     <Compile Include="Interop\ICookies.cs" />
     <Compile Include="Interop\IRemoteSessionState.cs" />
@@ -62,8 +64,8 @@
     <Compile Include="Interop\ServerVariableAdapter.cs" />
     <Compile Include="ISessionStateContext.cs" />
     <Compile Include="ISessionStateItemCollectionExtensions.cs" />
+    <Compile Include="SystemWebConfiguration.cs" />
     <Compile Include="SessionStateContext.cs" />
-    <Compile Include="FileSessionStateProvider.cs" />
     <Compile Include="ISessionStateProvider.cs" />
     <Compile Include="Interop\ISessionState.cs" />
     <Compile Include="ISqlSessionStateStore.cs" />
@@ -88,7 +90,7 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>if exist $(TargetPath) "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\gacutil.exe" -if $(TargetPath)</PostBuildEvent>
+    <PostBuildEvent>if exist $(TargetPath) "C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\gacutil.exe" /i $(TargetPath) /f</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

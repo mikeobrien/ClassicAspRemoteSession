@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.SessionState;
@@ -6,7 +7,6 @@ namespace RemoteSessionState
 {
     public class SqlSessionStateProvider : ISessionStateProvider
     {
-        private const int DefaultTimeout = 20;
         private ISqlSessionStateStore _sessionStore;
         private int _timeout;
 
@@ -47,10 +47,9 @@ namespace RemoteSessionState
 
         private void InitializeFromWebConfig(ISessionStateContext context)
         {
-            var webConfig = new WebConfig(context.VirtualDirectoryPath);
-            var connectionString = webConfig.GetValue<string>("configuration/system.web/sessionState/@sqlConnectionString");
-            var timeout = webConfig.GetValue<int>("configuration/system.web/sessionState/@timeout");
-            _timeout = timeout> 0 ? timeout : DefaultTimeout;
+            var systemWebConfiguration = new SystemWebConfiguration(context.VirtualDirectoryPath);
+            var connectionString = systemWebConfiguration.SessionState.SqlConnectionString;
+            _timeout = (int)systemWebConfiguration.SessionState.Timeout.TotalMinutes;
             _sessionStore = new SqlSessionStateStore(connectionString, _timeout);
         }
     }

@@ -9,7 +9,7 @@ using SessionState = RemoteSessionState.SessionState;
 namespace Tests.Integration
 {
     [TestFixture]
-    public class SessionStateTests
+    public class SqlSessionStateTests
     {
         [SetUp]
         public void Setup()

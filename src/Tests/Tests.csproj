@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NSubstitute">
       <HintPath>..\packages\NSubstitute.1.0.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
@@ -44,10 +47,14 @@
     <Reference Include="pnunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.101.3\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Should">
       <HintPath>..\packages\Should.1.1.12.0\lib\Should.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -57,13 +64,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acceptance\ClassicAspServiceTests.cs" />
+    <Compile Include="Acceptance\AspNetServiceTests.cs" />
+    <Compile Include="Acceptance\BridgeTests.cs" />
+    <Compile Include="Acceptance\Common.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\SessionDatabase.cs" />
-    <Compile Include="Integration\SessionStateTests.cs" />
+    <Compile Include="Integration\SqlSessionStateTests.cs" />
     <Compile Include="Common\TestDoubles\Cookies.cs" />
     <Compile Include="Common\TestDoubles\HttpContext.cs" />
     <Compile Include="Common\TestDoubles\ServerVariables.cs" />
     <Compile Include="Common\TestDoubles\SessionState.cs" />
+    <Compile Include="Unit\SystemWebConfigurationTests.cs" />
     <Compile Include="Unit\SessionStateContextTests.cs" />
     <Compile Include="Unit\SqlSessionIdTests.cs" />
     <Compile Include="Unit\SqlSessionStateProviderTests.cs" />
@@ -72,21 +84,12 @@
     <Compile Include="Unit\SessionStateEncodingTests.cs" />
     <Compile Include="Unit\SessionStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Integration\FileSessionProviderTests.cs" />
     <Compile Include="Unit\WebConfigTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
     <Content Include="Web.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

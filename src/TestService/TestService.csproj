@@ -51,19 +51,9 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="FileSession.aspx" />
-    <Content Include="FileSession.html" />
-    <Content Include="FileSession.asp" />
-    <Content Include="SqlSession.aspx" />
-    <Content Include="SqlSession.asp" />
-    <Content Include="SqlSession.html" />
+    <Content Include="Session.asp" />
+    <Content Include="Session.aspx" />
     <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,7 +68,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53535</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/RemoteSessionTestHarness</IISUrl>
+          <IISUrl>http://localhost/RemoteSessionStateTestService</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

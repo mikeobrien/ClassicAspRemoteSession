@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 
 namespace RemoteSessionState.Interop
 {
@@ -11,6 +12,11 @@ namespace RemoteSessionState.Interop
         protected RemoteSessionBase(ISessionStateProvider sessionProvider)
         {
             _session = new SessionState(sessionProvider);
+        }
+
+        public string GetVersion()
+        {
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
         }
 
         public void Load(dynamic request, dynamic response, dynamic session)
