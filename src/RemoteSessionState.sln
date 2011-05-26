@@ -6,6 +6,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteSessionState", "RemoteSessionState\RemoteSessionState.csproj", "{90442641-1ED0-4187-B53C-346EFC1EEB9E}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Installer.wixproj", "{A35D00AC-84C5-4341-9E7A-E436B943EB5F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{90442641-1ED0-4187-B53C-346EFC1EEB9E} = {90442641-1ED0-4187-B53C-346EFC1EEB9E}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestService", "TestService\TestService.csproj", "{C6D154BB-0382-4F22-8374-4B16A788B69A}"
 EndProject
