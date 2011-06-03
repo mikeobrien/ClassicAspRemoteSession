@@ -21,3 +21,17 @@ Saving session state to the sql server:
 Abandoning a session:
 
     RemoteSession.Abandon Request, Response, Session
+    
+Limitations
+---------------------
+
+The bridge will only work with the folllowing basic types. Session values of other types will be discarded.
+
+Boolean
+Byte
+DateTime (Date in VBScript)
+Double
+Int16 (Integer in VBScript)
+Int32 (Long in VBScript)
+Float (Single in VBScript)
+String
