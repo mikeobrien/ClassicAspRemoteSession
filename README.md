@@ -8,19 +8,19 @@ Usage
 
 Creating the remote session object:
 
-    Set RemoteSession = CreateObject("UltravioletCatastrophe.RemoteSqlSessionState")
+    Set remoteSession = CreateObject("UltravioletCatastrophe.RemoteSqlSessionState")
 
 Loading session state from sql server:
 
-    RemoteSession.Load Request, Response, Session
+    remoteSession.Load Request, Response, Session
     
 Saving session state to the sql server:
 
-    RemoteSession.Save Request, Response, Session
+    remoteSession.Save Request, Response, Session
     
 Abandoning a session:
 
-    RemoteSession.Abandon Request, Response, Session
+    remoteSession.Abandon Request, Response, Session
     
 Limitations
 ---------------------
