@@ -37,3 +37,10 @@ Int16|Integer
 Int32|Long
 Float|Single
 String|String
+
+
+A very | Cool     | Header
+-------|----------|-------
+  some | contents | yeah
+  more | and      | `more`
+  and  | **more**     | contents
