@@ -28,7 +28,7 @@ Limitations
 The bridge will only work with the folllowing basic types. Session values of other types will be discarded.
 
 CLR|VBScript
-***********|***********
+__________|__________
 Boolean|Boolean
 Byte|Byte
 DateTime|Date
