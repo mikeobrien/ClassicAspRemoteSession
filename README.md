@@ -1,7 +1,7 @@
 Classic ASP Remote Session
 =============
 
-This component provides a bridge between classic asp session state and ASP.NET SQL session state.
+This component provides a bridge between classic asp in-process session state and ASP.NET SQL session state.
 
 Usage
 ---------------------
@@ -28,7 +28,7 @@ Limitations
 The bridge will only work with the folllowing basic types. Session values of other types will be discarded.
 
 CLR|VBScript
---------|--------
+***********|***********
 Boolean|Boolean
 Byte|Byte
 DateTime|Date
