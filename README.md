@@ -27,7 +27,7 @@ Limitations
 
 The bridge will only work with the folllowing basic types. Session values of other types will be discarded.
 
-CLR|VBScript
+**CLR**|**VBScript**
 --------|--------
 Boolean|Boolean
 Byte|Byte
@@ -38,9 +38,3 @@ Int32|Long
 Float|Single
 String|String
 
-
-A very | Cool     | Header
--------|----------|-------
-  some | contents | yeah
-  more | and      | `more`
-  and  | **more**     | contents
