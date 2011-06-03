@@ -27,8 +27,8 @@ Limitations
 
 The bridge will only work with the folllowing basic types. Session values of other types will be discarded.
 
-CLR | VBScript
--------|----------
+CLR|VBScript
+--------|--------
 Boolean|Boolean
 Byte|Byte
 DateTime|Date
@@ -37,12 +37,3 @@ Int16|Integer
 Int32|Long
 Float|Single
 String|String
-
-Boolean
-Byte
-DateTime (Date in VBScript)
-Double
-Int16 (Integer in VBScript)
-Int32 (Long in VBScript)
-Float (Single in VBScript)
-String
