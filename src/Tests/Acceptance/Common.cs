@@ -72,19 +72,23 @@ namespace Tests.Acceptance
             var request = new RestRequest(page + (querystring != null ? "?" + querystring : string.Empty));
             if (sessionId != null) request.AddParameter(sessionIdCookie, sessionId, ParameterType.Cookie);
             var response = Client.Execute<List<SessionVariable>>(request);
-            if (!string.IsNullOrEmpty(response.ErrorMessage)) Debug.WriteLine(string.Format("{0}?{1}:\r\n\r\n{2}\r\n", page, querystring ?? string.Empty, response.Content));
+            if (response.ResponseStatus == ResponseStatus.Error) Debug.WriteLine(response.Content);
             return new SessionResponse<List<SessionVariable>>
                        {
                            Response = response,
-                           SessionId = sessionId ?? response.Cookies.Where(x => x.Name == sessionIdCookie).Select(x => x.Value).FirstOrDefault()
+                           SessionId = sessionId ?? response.Cookies.Where(x => x.Name == sessionIdCookie).Select(x => x.Value).FirstOrDefault(),
+                           Error = response.ResponseStatus == ResponseStatus.Error,
+                           ErrorMessage = response.Content
                        };
         }
 
         public class SessionResponse<T>
         {
             public string SessionId { get; set; }
-            public RestResponse<T> Response {get; set;}
-            public T Data { get { return Response.Data; }}
+            public RestResponse<T> Response { get; set; }
+            public T Data { get { return Response.Data; } }
+            public bool Error { get; set; }
+            public string ErrorMessage { get; set; }
         }
 
         public class SessionVariable

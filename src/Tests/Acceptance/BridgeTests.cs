@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using NUnit.Framework;
 using RemoteSessionState.Interop;
 using Should;
@@ -124,6 +125,17 @@ namespace Tests.Acceptance
                                  GetNet();
 
             session.Data.ShouldBeEmpty();
+        }
+
+        [Test]
+        public void Should_Fail_When_Net_Type_Exists_In_Net_Session()
+        {
+            var session = Common.GetNet("command=addnettype").
+                                 GetNet("command=add&key=zip&value=80012&datatype=Int32").
+                                 GetClassic();
+
+            session.Error.ShouldBeTrue();
+            session.ErrorMessage.ShouldContain("Session item '__nettype__' type cannot not be marshaled. Only primitive types (Boolean, Byte, System.DateTime/Date, Double, System.Int16/Integer, System.Int32/Long, System.Float/Single, String) can be marshaled between Classic ASP and ASP.NET.");
         }
     }
 }

@@ -1,7 +1,20 @@
 ﻿<%@ Page language="C#" %>
 
+<script language="C#" runat="server">
+
+[Serializable]
+public class SomeType
+{
+    public DateTime CurrentTime { get { return DateTime.Now; } }    
+}
+
+</script>
+
 <%
     Response.ContentType = "application/json";
+
+    if (Request.QueryString["command"] == "addnettype") Session["__nettype__"] = new SomeType();
+    if (Request.QueryString["command"] == "removenettype") Session["__nettype__"] = null;
     
     if (Request.QueryString["command"] == "abandon") Session.Abandon();
 
