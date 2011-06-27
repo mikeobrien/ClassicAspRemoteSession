@@ -133,8 +133,8 @@ namespace Tests.Acceptance
             var session = Common.GetNet("command=addnettype").
                                  GetNet("command=add&key=zip&value=80012&datatype=Int32").
                                  GetClassic();
-
             session.Error.ShouldBeTrue();
+            session.ErrorMessage.ShouldContain("Error loading session");
             session.ErrorMessage.ShouldContain("Session item '__nettype__' type cannot not be marshaled. Only primitive types (Boolean, Byte, System.DateTime/Date, Double, System.Int16/Integer, System.Int32/Long, System.Float/Single, String) can be marshaled between Classic ASP and ASP.NET.");
         }
     }

@@ -1,12 +1,10 @@
 using System;
-using System.IO;
 using System.Reflection;
 
 namespace RemoteSessionState.Interop
 {
     public abstract class RemoteSessionBase : IRemoteSessionState
     {
-        private static readonly string LogFile = Path.Combine(Path.GetTempPath(), "RemoteSession.log");
         private readonly SessionState _session;
 
         protected RemoteSessionBase(ISessionStateProvider sessionProvider)
@@ -27,8 +25,7 @@ namespace RemoteSessionState.Interop
             }
             catch (Exception ex)
             {
-                LogException(ex);
-                throw;
+                throw new SessionException("loading", ex);
             }
         }
 
@@ -40,8 +37,7 @@ namespace RemoteSessionState.Interop
             }
             catch (Exception ex)
             {
-                LogException(ex);
-                throw;
+                throw new SessionException("saving", ex);
             }
         }
 
@@ -53,8 +49,7 @@ namespace RemoteSessionState.Interop
             }
             catch (Exception ex)
             {
-                LogException(ex);
-                throw;
+                throw new SessionException("abandoning", ex);
             }
         }
 
@@ -64,11 +59,6 @@ namespace RemoteSessionState.Interop
                                    new CookieAdapter(request.Cookies, response),
                                    new CookieAdapter(response.Cookies, response),
                                    new SessionStateAdapter(session));
-        }
-
-        private static void LogException(Exception exception)
-        {
-            File.AppendAllText(LogFile, string.Format("{0}: {1}\r\n\r\n", DateTime.Now, exception));
         }
     }
 }

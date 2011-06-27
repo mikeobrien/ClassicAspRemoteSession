@@ -62,6 +62,7 @@
     <Compile Include="Interop\IServerVariables.cs" />
     <Compile Include="Interop\RemoteSessionBase.cs" />
     <Compile Include="Interop\ServerVariableAdapter.cs" />
+    <Compile Include="Interop\SessionException.cs" />
     <Compile Include="ISessionStateContext.cs" />
     <Compile Include="ISessionStateItemCollectionExtensions.cs" />
     <Compile Include="SystemWebConfiguration.cs" />
