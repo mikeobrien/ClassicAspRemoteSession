@@ -14,8 +14,8 @@ namespace Tests.Unit
         private const string SessionStateKey1 = "name1", SessionStateValue1 = "value1";
         private const string SessionStateKey2 = "name2", SessionStateValue2 = "value2";
 
-        private readonly IDictionary<string, object> SessionState = new Dictionary<string, object> 
-                { { SessionStateKey1, SessionStateValue1 }, { SessionStateKey2, SessionStateValue2 } };
+        private readonly IDictionary<string, object> _sessionState = 
+            new Dictionary<string, object> { { SessionStateKey1, SessionStateValue1 }, { SessionStateKey2, SessionStateValue2 } };
 
         private static HttpContext CreateMockableContext()
         {
@@ -48,14 +48,34 @@ namespace Tests.Unit
 
             context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].Returns(Constants.SessionId);
-            sessionProvider.Load(null).ReturnsForAnyArgs(SessionState);
+            sessionProvider.Load(null).ReturnsForAnyArgs(_sessionState);
 
             new SessionState(sessionProvider).Load(context);
 
             sessionProvider.ReceivedWithAnyArgs().Load(null);
-            context.SessionState.Received().RemoveAll();
             context.SessionState.Received()[SessionStateKey1] = SessionStateValue1;
             context.SessionState.Received()[SessionStateKey2] = SessionStateValue2;
+            context.SessionState.DidNotReceiveWithAnyArgs().Remove(null);
+        }
+
+        [Test]
+        public void Open_Should_Should_Remove_Extra_Variables_If_There_Is_An_Active_Session()
+        {
+            var context = CreateMockableContext();
+            var sessionProvider = Substitute.For<ISessionStateProvider>();
+            const string TestVariable = "test";
+
+            context.SessionState.GetEnumerator().Returns((new Dictionary<string, object> { { TestVariable, new object()}}).GetEnumerator());
+            context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
+            context.RequestCookies[SessionStateContext.AspNetSessionCookieName].Returns(Constants.SessionId);
+            sessionProvider.Load(null).ReturnsForAnyArgs(_sessionState);
+
+            new SessionState(sessionProvider).Load(context);
+
+            sessionProvider.ReceivedWithAnyArgs().Load(null);
+            context.SessionState.Received()[SessionStateKey1] = SessionStateValue1;
+            context.SessionState.Received()[SessionStateKey2] = SessionStateValue2;
+            context.SessionState.Received().Remove(TestVariable);
         }
 
         [Test]
@@ -71,7 +91,6 @@ namespace Tests.Unit
             new SessionState(sessionProvider).Load(context);
 
             sessionProvider.ReceivedWithAnyArgs().Load(null);
-            context.SessionState.Received().RemoveAll();
             context.SessionState.Received()[Constants.SessionStateStringKey] = Constants.SessionStateStringValue;
             context.SessionState.Received()[Constants.SessionStateByteKey] = Constants.SessionStateByteValue;
             context.SessionState.Received()[Constants.SessionStateBoolKey] = Constants.SessionStateBoolValue;
@@ -81,6 +100,7 @@ namespace Tests.Unit
             context.SessionState.Received()[Constants.SessionStateFloatKey] = Constants.SessionStateFloatValue;
             context.SessionState.Received()[Constants.SessionStateDateTimeKey] = Constants.SessionStateDateTimeValue;
             context.SessionState.DidNotReceive()[Constants.SessionStateGuidKey] = Constants.SessionStateGuidValue;
+            context.SessionState.DidNotReceiveWithAnyArgs().Remove(null);
         }
 
         [Test]
@@ -108,7 +128,7 @@ namespace Tests.Unit
 
             context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].Returns(Constants.SessionId);
-            context.SessionState.GetEnumerator().Returns(SessionState.GetEnumerator());
+            context.SessionState.GetEnumerator().Returns(_sessionState.GetEnumerator());
 
             new SessionState(sessionProvider).Save(context);
 
@@ -150,7 +170,7 @@ namespace Tests.Unit
 
             context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].ReturnsForAnyArgs((string)null);
-            context.SessionState.GetEnumerator().Returns(SessionState.GetEnumerator());
+            context.SessionState.GetEnumerator().Returns(_sessionState.GetEnumerator());
 
             new SessionState(sessionProvider).Save(context);
 
@@ -166,7 +186,7 @@ namespace Tests.Unit
             var sessionProvider = Substitute.For<ISessionStateProvider>();
 
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].ReturnsForAnyArgs((string)null);
-            context.SessionState.GetEnumerator().Returns(SessionState.GetEnumerator());
+            context.SessionState.GetEnumerator().Returns(_sessionState.GetEnumerator());
 
             new SessionState(sessionProvider).Abandon(context);
 
@@ -182,7 +202,7 @@ namespace Tests.Unit
 
             context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].ReturnsForAnyArgs(Constants.SessionId);
-            context.SessionState.GetEnumerator().Returns(SessionState.GetEnumerator());
+            context.SessionState.GetEnumerator().Returns(_sessionState.GetEnumerator());
 
             new SessionState(sessionProvider).Abandon(context);
 

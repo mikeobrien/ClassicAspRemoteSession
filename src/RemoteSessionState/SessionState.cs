@@ -25,10 +25,15 @@ namespace RemoteSessionState
         {
             var sessionContext = SessionStateContext.Create(httpContext);
             if (!sessionContext.HasActiveSession()) return;
-            var values = _sessionProvider.Load(sessionContext);
-            httpContext.SessionState.RemoveAll();
-            if (values == null || !values.Any()) return;
-            foreach (var value in ItemsWithCompatableDataTypes(values)) httpContext.SessionState[value.Key] = value.Value;
+            var values = ItemsWithCompatableDataTypes(_sessionProvider.Load(sessionContext));
+            if (values == null || !values.Any())
+            {
+                httpContext.SessionState.RemoveAll();
+                return;
+            }
+            values.ToList().ForEach(x => httpContext.SessionState[x.Key] = x.Value);
+            httpContext.SessionState.Where(x => !values.ContainsKey(x.Key)).ToList().
+                                     ForEach(x => httpContext.SessionState.Remove(x.Key));
         }
 
         public void Save(IHttpContext httpContext)
@@ -49,6 +54,7 @@ namespace RemoteSessionState
 
         private static IDictionary<string, object> ItemsWithCompatableDataTypes(IDictionary<string, object> values)
         {
+            if (values == null || !values.Any()) return null;
             return values.Where(x => x.Value != null).
                           Join(CompatableTypes, x => x.Value.GetType(), x => x, (x, y) => x).ToDictionary(x => x.Key, x => x.Value);
         }
