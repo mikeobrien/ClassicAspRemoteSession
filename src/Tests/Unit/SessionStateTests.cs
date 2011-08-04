@@ -121,6 +121,22 @@ namespace Tests.Unit
         }
 
         [Test]
+        public void Save_Should_Save_Empty_Variables_To_The_Active_Session()
+        {
+            var context = CreateMockableContext();
+            var sessionProvider = Substitute.For<ISessionStateProvider>();
+
+            context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
+            context.RequestCookies[SessionStateContext.AspNetSessionCookieName].Returns(Constants.SessionId);
+            context.SessionState.GetEnumerator().Returns((new Dictionary<string, object>()).GetEnumerator());
+
+            new SessionState(sessionProvider).Save(context);
+
+            sessionProvider.Received().Save(Arg.Any<SessionStateContext>(), Arg.Is<Dictionary<string, object>>(x => x.Count == 0));
+            context.ResponseCookies.DidNotReceiveWithAnyArgs()[null] = Arg.Any<string>();
+        }
+
+        [Test]
         public void Save_Should_Save_Variables_To_The_Active_Session()
         {
             var context = CreateMockableContext();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace RemoteSessionState
             var sessionContext = SessionStateContext.Create(httpContext);
             if (!sessionContext.HasActiveSession()) return;
             var values = ItemsWithCompatableDataTypes(_sessionProvider.Load(sessionContext));
-            if (values == null || !values.Any())
+            if (!values.Any())
             {
                 httpContext.SessionState.RemoveAll();
                 return;
@@ -54,7 +55,7 @@ namespace RemoteSessionState
 
         private static IDictionary<string, object> ItemsWithCompatableDataTypes(IDictionary<string, object> values)
         {
-            if (values == null || !values.Any()) return null;
+            if (values == null) return new Dictionary<string, object>();
             return values.Where(x => x.Value != null).
                           Join(CompatableTypes, x => x.Value.GetType(), x => x, (x, y) => x).ToDictionary(x => x.Key, x => x.Value);
         }

@@ -37,12 +37,12 @@
                 <ProgId Id="UltravioletCatastrophe.RemoteSqlSessionState" Description="RemoteSessionState.Interop.RemoteSqlSessionState" />
               </Class>
               <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.3" Name="Class" Value="RemoteSessionState.Interop.RemoteSqlSessionState" Type="string" Action="write" />
-              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.3" Name="Assembly" Value="RemoteSessionState, Version=1.0.0.3, Culture=neutral, PublicKeyToken=8838a0cb5d7412d8" Type="string" Action="write" />
-              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.3" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.3" Name="CodeBase" Value="file:///[#fil96BD777ADB4C665E0366CBE4515DA951]" Type="string" Action="write" />
+              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.5" Name="Class" Value="RemoteSessionState.Interop.RemoteSqlSessionState" Type="string" Action="write" />
+              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.5" Name="Assembly" Value="RemoteSessionState, Version=1.0.0.5, Culture=neutral, PublicKeyToken=8838a0cb5d7412d8" Type="string" Action="write" />
+              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.5" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32\1.0.0.5" Name="CodeBase" Value="file:///[#fil96BD777ADB4C665E0366CBE4515DA951]" Type="string" Action="write" />
               <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32" Name="Class" Value="RemoteSessionState.Interop.RemoteSqlSessionState" Type="string" Action="write" />
-              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32" Name="Assembly" Value="RemoteSessionState, Version=1.0.0.3, Culture=neutral, PublicKeyToken=8838a0cb5d7412d8" Type="string" Action="write" />
+              <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32" Name="Assembly" Value="RemoteSessionState, Version=1.0.0.5, Culture=neutral, PublicKeyToken=8838a0cb5d7412d8" Type="string" Action="write" />
               <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
               <RegistryValue Root="HKCR" Key="CLSID\{51D25D7A-75E7-4584-804A-12851D37BB97}\InprocServer32" Name="CodeBase" Value="file:///[#fil96BD777ADB4C665E0366CBE4515DA951]" Type="string" Action="write" />
               <RegistryValue Root="HKCR" Key="Component Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Name="0" Value=".NET Category" Type="string" Action="write" />
