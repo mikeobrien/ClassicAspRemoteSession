@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -7,11 +8,11 @@ namespace Tests.Acceptance
 {
     public static class Common
     {
-        private static readonly RestClient Client = new RestClient("http://localhost/RemoteSessionStateTestService/");
+        private static readonly Func<RestClient> Client = () => new RestClient("http://localhost/RemoteSessionStateTestService/");
 
         public static string GetRegisteredComVersion()
         {
-            var response = Client.Execute(new RestRequest("session.asp?command=version"));
+            var response = Client().Execute(new RestRequest("session.asp?command=version"));
             if (!string.IsNullOrEmpty(response.ErrorMessage)) Debug.WriteLine(response.Content);
             return response.Content;
         }
@@ -71,7 +72,7 @@ namespace Tests.Acceptance
             const string sessionIdCookie = "ASP.NET_SessionId";
             var request = new RestRequest(page + (querystring != null ? "?" + querystring : string.Empty));
             if (sessionId != null) request.AddParameter(sessionIdCookie, sessionId, ParameterType.Cookie);
-            var response = Client.Execute<List<SessionVariable>>(request);
+            var response = Client().Execute<List<SessionVariable>>(request);
             if (response.ResponseStatus == ResponseStatus.Error) Debug.WriteLine(response.Content);
             return new SessionResponse<List<SessionVariable>>
                        {

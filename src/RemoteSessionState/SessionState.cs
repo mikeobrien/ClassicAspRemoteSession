@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using RemoteSessionState.Interop;
 
@@ -32,7 +30,9 @@ namespace RemoteSessionState
                 httpContext.SessionState.RemoveAll();
                 return;
             }
-            values.ToList().ForEach(x => httpContext.SessionState[x.Key] = x.Value);
+            values.Where(x => !httpContext.SessionState.Any(y => y.Key == x.Key) || 
+                              httpContext.SessionState[x.Key] != x.Value).
+                   ToList().ForEach(x => httpContext.SessionState[x.Key] = x.Value);
             httpContext.SessionState.Where(x => !values.ContainsKey(x.Key)).ToList().
                                      ForEach(x => httpContext.SessionState.Remove(x.Key));
         }

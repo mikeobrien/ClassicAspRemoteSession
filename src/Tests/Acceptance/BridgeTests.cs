@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 using NUnit.Framework;
 using RemoteSessionState.Interop;
 using Should;
@@ -136,6 +138,26 @@ namespace Tests.Acceptance
             session.Error.ShouldBeTrue();
             session.ErrorMessage.ShouldContain("Error loading session");
             session.ErrorMessage.ShouldContain("Session item '__nettype__' type cannot not be marshaled. Only primitive types (Boolean, Byte, System.DateTime/Date, Double, System.Int16/Integer, System.Int32/Long, System.Float/Single, String) can be marshaled between Classic ASP and ASP.NET.");
+        }
+
+        [Test]
+        public void Should_Return_Session_State_For_All_Classic_Concurent_Requests()
+        {
+            var counts = new List<int>();
+            var session = Common.GetClassic("command=add&key=state&value=CO&datatype=String");
+            for (var i = 0; i < 20; i++) ThreadPool.QueueUserWorkItem(x => counts.Add(session.GetClassic().Data.Count));
+            while (counts.Count < 20) Thread.Sleep(100);
+            counts.All(x => x == 1).ShouldBeTrue();
+        }
+
+        [Test]
+        public void Should_Return_Session_State_For_All_Net_Concurent_Requests()
+        {
+            var counts = new List<int>();
+            var session = Common.GetNet("command=add&key=state&value=CO&datatype=String");
+            for (var i = 0; i < 20; i++) ThreadPool.QueueUserWorkItem(x => counts.Add(session.GetNet().Data.Count));
+            while (counts.Count < 20) Thread.Sleep(100);
+            counts.All(x => x == 1).ShouldBeTrue();
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Tests.Unit
             var sessionProvider = Substitute.For<ISessionStateProvider>();
             const string TestVariable = "test";
 
-            context.SessionState.GetEnumerator().Returns((new Dictionary<string, object> { { TestVariable, new object()}}).GetEnumerator());
+            context.SessionState.GetEnumerator().Returns(x => (new Dictionary<string, object> { { TestVariable, new object()}}).GetEnumerator());
             context.ServerVariables[SessionStateContext.MetadataPathServerVariable].Returns(Constants.MetabasePath);
             context.RequestCookies[SessionStateContext.AspNetSessionCookieName].Returns(Constants.SessionId);
             sessionProvider.Load(null).ReturnsForAnyArgs(_sessionState);
