@@ -70,7 +70,7 @@
     <Compile Include="Acceptance\Common.cs" />
     <Compile Include="Common\Constants.cs" />
     <Compile Include="Common\SessionDatabase.cs" />
-    <Compile Include="Integration\SqlSessionStateTests.cs" />
+    <Compile Include="Integration\SqlSessionStateProviderTests.cs" />
     <Compile Include="Common\TestDoubles\Cookies.cs" />
     <Compile Include="Common\TestDoubles\HttpContext.cs" />
     <Compile Include="Common\TestDoubles\ServerVariables.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="Unit\SqlSessionIdTests.cs" />
     <Compile Include="Unit\SqlSessionStateProviderTests.cs" />
     <Compile Include="Common\SqlClientExtensions.cs" />
-    <Compile Include="Integration\SqlSessionStoreTests.cs" />
+    <Compile Include="Integration\SqlSessionStateStoreTests.cs" />
     <Compile Include="Unit\SessionStateEncodingTests.cs" />
     <Compile Include="Unit\SessionStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

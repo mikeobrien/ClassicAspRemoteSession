@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using RemoteSessionState;
 using Should;
@@ -7,7 +10,7 @@ using Tests.Common;
 namespace Tests.Integration
 {
     [TestFixture]
-    public class SqlSessionStoreTests
+    public class SqlSessionStateStoreTests
     {
         private readonly SqlSessionId _sessionId = SqlSessionId.Create(Constants.MetabasePath, Constants.SessionId);
         private static readonly byte[] ShortData = GetByteArray(500);
@@ -46,6 +49,21 @@ namespace Tests.Integration
 
             session.ShouldNotBeNull("No session found");
             session.Locked.ShouldBeFalse();
+        }
+
+        [Test]
+        public void Should_Concurrently_Load_A_Session_And_Unlock_It_Afterwards()
+        {
+            SessionDatabase.CreateSession(Constants.FullSessionId, ShortData);
+            var store = new SqlSessionStateStore(Constants.ConnectionString, Constants.SessionTimeout);
+            var results = new ConcurrentBag<bool>();
+
+            for (var i = 0; i < 20; i++) ThreadPool.QueueUserWorkItem(
+                x => results.Add((store.Load(_sessionId) ?? new byte[] {}).SequenceEqual(ShortData)));
+
+            while (results.Count < 20) Thread.Sleep(100);
+
+            results.All(x => x).ShouldBeTrue();
         }
 
         [Test]

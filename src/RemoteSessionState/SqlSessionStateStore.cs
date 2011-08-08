@@ -71,7 +71,7 @@ namespace RemoteSessionState
         private SqlSession GetSessionData(SqlSessionId sessionId)
         {
             var session = new SqlSession { Id = sessionId };
-            SqlProcedure.Create(_connectionString, "TempGetStateItemExclusive3").
+            SqlProcedure.Create(_connectionString, "TempGetStateItem3").
                          Execute(x => session.Data = x.Read() ? (byte[])x[0] : session.Data,
                                  x => x.In("id", sessionId.ToString()),
                                  x => x.Out<byte[]>("itemShort", SqlDbType.VarBinary, 7000, y => session.Data = y),

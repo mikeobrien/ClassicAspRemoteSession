@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -143,7 +144,7 @@ namespace Tests.Acceptance
         [Test]
         public void Should_Return_Session_State_For_All_Classic_Concurent_Requests()
         {
-            var counts = new List<int>();
+            var counts = new ConcurrentBag<int>();
             var session = Common.GetClassic("command=add&key=state&value=CO&datatype=String");
             for (var i = 0; i < 20; i++) ThreadPool.QueueUserWorkItem(x => counts.Add(session.GetClassic().Data.Count));
             while (counts.Count < 20) Thread.Sleep(100);
